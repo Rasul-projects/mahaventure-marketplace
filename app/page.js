@@ -1,47 +1,64 @@
 'use client';
+import { useState } from 'react';
 import { MapPin } from 'lucide-react';
 
-const activities = [
-  { id: 1, name: "Kalsubai Trek", price: "₹1,200", location: "Sahyadri" },
-  { id: 2, name: "Bhandardara Camping", price: "₹2,500", location: "Ahmednagar" },
-];
-
 export default function Home() {
-  return (
-    <main className="min-h-screen bg-slate-950 p-6 md:p-12">
-      <header className="mb-12">
-        <h1 className="text-4xl md:text-5xl font-black text-white mb-4 tracking-tight">
-          Maharashtra Adventure Marketplace
-        </h1>
-        <p className="text-slate-400 text-lg">Connecting local operators to thrill-seekers.</p>
-      </header>
+  const [showModal, setShowModal] = useState(false);
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        {activities.map((act) => (
-          <div key={act.id} className="relative group bg-slate-900 rounded-3xl p-1 shadow-2xl hover:scale-[1.02] transition-all duration-300">
-            <div className="bg-slate-800 rounded-[22px] p-6 h-full flex flex-col">
-              <div className="h-40 bg-gradient-to-tr from-blue-600 to-cyan-400 rounded-2xl mb-6 flex items-center justify-center text-4xl shadow-inner">
-                🏔️
-              </div>
-              <h2 className="text-2xl font-bold text-white mb-2 tracking-tight">{act.name}</h2>
-              <div className="flex items-center gap-2 text-slate-400 mb-6 font-medium">
-                <MapPin size={16} /> {act.location}
-              </div>
-              <div className="mt-auto flex justify-between items-center">
-                <span className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">
-                  {act.price}
-                </span>
-                <button 
-                  onClick={() => alert('Redirecting to Booking...')}
-                  className="bg-white text-slate-900 px-6 py-2.5 rounded-xl font-bold hover:bg-cyan-400 transition-colors shadow-lg"
-                >
-                  Reserve
-                </button>
-              </div>
+  return (
+    <main className="min-h-screen bg-slate-950 text-white font-sans p-6 md:p-12">
+      {/* Navbar */}
+      <nav className="max-w-6xl mx-auto flex justify-between items-center mb-12">
+        <h1 className="text-2xl font-black text-blue-500">MahaVenture</h1>
+        <button className="bg-blue-600 px-6 py-2 rounded-full font-bold hover:bg-blue-500 transition">
+          Dashboard
+        </button>
+      </nav>
+
+      {/* Hero Section */}
+      <section className="max-w-6xl mx-auto mb-12">
+        <h2 className="text-5xl md:text-6xl font-black mb-4 tracking-tight">Explore Maharashtra.</h2>
+        <p className="text-slate-400 text-xl">Verified operators. Secure bookings. Real adventures.</p>
+      </section>
+
+      {/* Grid Section */}
+      <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-8">
+        {[
+          { title: "Kalsubai Trek", desc: "Summit the highest peak in Maharashtra with expert guides.", img: "https://images.unsplash.com/photo-1542262967-175510928236?auto=format&fit=crop&q=80&w=800" },
+          { title: "Bhandardara Camping", desc: "Stargazing by the lake in the heart of Sahyadri.", img: "https://images.unsplash.com/photo-1504280390367-361c6d8e38f4?auto=format&fit=crop&q=80&w=800" }
+        ].map((item, idx) => (
+          <div key={idx} className="bg-slate-900 rounded-3xl overflow-hidden shadow-2xl border border-slate-800">
+            <img src={item.img} alt={item.title} className="w-full h-64 object-cover" />
+            <div className="p-8">
+              <h3 className="text-2xl font-bold mb-2">{item.title}</h3>
+              <p className="text-slate-400 mb-6">{item.desc}</p>
+              <button 
+                onClick={() => setShowModal(true)}
+                className="w-full bg-white text-black font-bold py-4 rounded-xl hover:bg-blue-400 transition"
+              >
+                Reserve Now
+              </button>
             </div>
           </div>
         ))}
       </div>
+
+      {/* Booking Modal */}
+      {showModal && (
+        <div className="fixed inset-0 bg-black/80 flex items-center justify-center p-4 z-50">
+          <div className="bg-slate-900 p-8 rounded-3xl w-full max-w-md border border-blue-500">
+            <h3 className="text-2xl font-bold mb-6">Confirm Booking</h3>
+            <input type="text" placeholder="Your Name" className="w-full bg-slate-800 p-4 rounded-xl mb-4 text-white border border-slate-700" />
+            <button 
+              onClick={() => { alert('Booking Successful!'); setShowModal(false); }} 
+              className="w-full bg-blue-600 py-4 rounded-xl font-bold mb-4"
+            >
+              Pay & Confirm
+            </button>
+            <button onClick={() => setShowModal(false)} className="w-full text-slate-500">Cancel</button>
+          </div>
+        </div>
+      )}
     </main>
   );
 }
